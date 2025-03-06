@@ -74,9 +74,7 @@
                             </li>
                         </ul>
                         <div style="display: flex; justify-content: center;">
-                            <form action="{{ URL::to('/login-checkout') }}" method="get">
-                                <button type="submit" class="btn btn-default check_out">Buy</button>
-                            </form>
+                        <a class="btn btn-default check_out" href="{{ URL::to('/checkout') }}">Buy</a>
                         </div>
                     </div>
                 </div>
