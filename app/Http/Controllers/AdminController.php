@@ -61,4 +61,7 @@ class AdminController extends Controller
         Session::put('admin_id', null);
         return view('admin');
     }
+
+   
+
 }

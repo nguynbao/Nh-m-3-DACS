@@ -23,11 +23,13 @@ Route::middleware(['web'])->group(function () {
     Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'show_product']);
 
 
+
     // Admin
     Route::get('/admin', [AdminController::class, 'index']);
     Route::get('/dashboard', [AdminController::class, 'show_dashboard']);
     Route::get('/logout', [AdminController::class, 'logout']);
     Route::post('/dashboard', [AdminController::class, 'login'])->name('admin.dashboard');
+
 
     // CategoryProductController
     Route::get('/add-category-product', [CategoryProductController::class, 'add_category_product']);
@@ -74,4 +76,7 @@ Route::middleware(['web'])->group(function () {
     Route::post('/save-checkout', [CheckOutController::class, 'save_checkout'])->name('save.checkout');
     Route::post('/process-payment', [CheckOutController::class, 'process_payment']);
     Route::get('/order-complete', [CheckOutController::class, 'order_complete']);
+    Route::get('/manage-order', [CheckOutController::class, 'show_order']);
+    Route::get('/confirm-order/{order_id}', [CheckOutController::class, 'confirm_order']);
+
 });

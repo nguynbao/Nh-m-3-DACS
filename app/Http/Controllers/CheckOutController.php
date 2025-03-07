@@ -15,6 +15,15 @@ use Carbon\Carbon;
 
 class CheckOutController extends Controller
 {
+    public function check()
+    {
+        $admin_id = Session::get('admin_id');
+        if ($admin_id) {
+            return Redirect::to('dashboard');
+        } else {
+            return Redirect::to('admin')->send();
+        }
+    }
     public function login_checkout()
     {
         if (Auth::check()) {
@@ -54,8 +63,6 @@ class CheckOutController extends Controller
         // Nếu thất bại, quay lại trang login với thông báo lỗi
         return redirect()->back()->with('error', 'Email hoặc mật khẩu không chính xác!')->withInput();
     }
-
-
 
     public function add_user(Request $request)
     {
@@ -228,12 +235,19 @@ class CheckOutController extends Controller
             // Redirect based on payment method
             if ($request->payment_method == 'cash') {
                 return redirect('/order-complete')->with('success', 'Đặt hàng thành công! Cảm ơn bạn đã mua hàng.');
+            } elseif ($request->payment_method == 'atm') {
+                return redirect('/order-complete')->with('info', 'Vui lòng thanh toán qua ngân hàng.');
+            } elseif ($request->payment_method == 'momo') {
+                return redirect('/order-complete')->with('info', 'Vui lòng thanh toán qua ví MoMo.');
+            } else {
+                return redirect()->back()->with('error', 'Phương thức thanh toán không hợp lệ.');
             }
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
     }
+
 
     public function order_complete()
     {
@@ -252,4 +266,33 @@ class CheckOutController extends Controller
         $request->session()->regenerateToken();
         return redirect('/trang-chu')->with('success', 'Đăng xuất thành công!');
     }
+    public function show_order()
+    {
+        $this->check();
+        $all_order = DB::table('order')
+            ->Join('users', 'users.id', '=', 'order.user_id')
+            ->select('order.*', 'users.name')
+            ->orderBy('order.order_id', 'desc')
+            ->get();
+        $manage_order = view('admin.manage_order')->with('all_order', $all_order);
+        return view('admin_layout')->with('admin.manage_order', $manage_order);
+    }
+    public function confirm_order($order_id)
+    {
+        // Kiểm tra xem đơn hàng có tồn tại không
+        $order = Order::find($order_id);
+
+        if (!$order) {
+            return redirect()->back()->with('error', 'Đơn hàng không tồn tại.');
+        }
+
+        // Cập nhật trạng thái đơn hàng thành "Đã xác nhận"
+        $order->order_status = 'Đã xác nhận';
+        $order->updated_at = Carbon::now();
+        $order->save();
+
+        return redirect()->back()->with('success', 'Đơn hàng đã được xác nhận thành công.');
+    }
+
+
 }

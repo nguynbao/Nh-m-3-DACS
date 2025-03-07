@@ -92,24 +92,37 @@
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
-                                <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+                                @if(Auth::check())
+                                    <li style="position: relative; display: inline-block;">
+                                        <a href="{{ url('/user-profile') }}" style="text-decoration: none;">
+                                            <i class="fa fa-user"></i> Welcome, {{ Auth::user()->name }}
+                                        </a>
+                                        <ul style="display: none; position: absolute; top: 100%; left: 0; background-color: white; padding: 10px; 
+                                                        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); list-style: none; min-width: 120px;"
+                                            class="logout-menu">
+                                            <li>
+                                                <a href="{{ url('/logout') }}"
+                                                    style="text-decoration: none; display: block; padding: 5px;">
+                                                    <i class="fa fa-lock"></i> Logout
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <style>
+                                        li:hover .logout-menu {
+                                            display: block !important;
+                                        }
+                                    </style>
+                                @else
+
+                                    <li><a href="{{ url('/login-checkout') }}"><i class="fa fa-lock"></i> Login</a></li>
+                                @endif
                                 <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
                                 <li><a href="{{URL::to('/check-out') }}"><i class="fa fa-crosshairs"></i> Checkout</a>
                                 </li>
                                 <li><a href="{{ URL::to('/show-cart') }}"><i class="fa fa-shopping-cart"></i> Cart</a>
                                 </li>
-                                @if(Auth::check())
-                                    <li>
-                                        <a href="{{ url('/user-profile') }}">
-                                            <i class="fa fa-user"></i> Welcome, {{ Auth::user()->name }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('/logout') }}"><i class="fa fa-lock"></i> Logout</a>
-                                    </li>
-                                @else
-                                    <li><a href="{{ url('/login-checkout') }}"><i class="fa fa-lock"></i> Login</a></li>
-                                @endif
 
                             </ul>
                         </div>
