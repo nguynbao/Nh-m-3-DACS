@@ -147,9 +147,10 @@
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <form action="/search" method="GET" class="search_box pull-right">
-                            <input type="text" name="q" placeholder="Search" />
-                            <button type="submit">🔍</button>
+                        <form action="{{ URL::to('/search') }}" method="post" class="search_box pull-right">
+                            @csrf
+                            <input type="text" name="key_word" placeholder="Search" />
+                            <button type="submit" name="search_items">🔍</button>
                         </form>
                     </div>
 

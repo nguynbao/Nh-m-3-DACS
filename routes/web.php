@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['web'])->group(function () {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/trang-chu', [HomeController::class, 'index']);
-    Route::get('/search', [HomeController::class, 'search']);
+    Route::post('/search', [HomeController::class, 'search']);
 
     //danh muc
 
@@ -58,7 +58,6 @@ Route::middleware(['web'])->group(function () {
     Route::post('/update-product/{product_id}', [ProductController::class, 'update_product']);
     Route::get('/unactive-product/{product_id}', [ProductController::class, 'unactive']);
     Route::get('/active-product/{product_id}', [ProductController::class, 'active']);
-    Route::get('/product/{product_id}', [ProductController::class, 'show'])->name('product.show');
     //cart
     Route::post('/add-cart', [CartController::class, 'addToCart']);
     Route::get('/show-cart', [CartController::class, 'show_cart'])->name('show-cart');

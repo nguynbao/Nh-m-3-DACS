@@ -18,16 +18,12 @@ class HomeController extends Controller
     }
     public function search(Request $request)
     {
-        $query = $request->input('q');
+        $query = $request->key_word;
+        $cate_product = DB::table('category_product')->where('category_status', '0')->orderBy('category_id', 'desc')->get();
+        $brand_product = DB::table('brand_product')->where('brand_status', '0')->orderBy('brand_id', 'desc')->get();
+        $search_product = DB::table('tbl_product')->where('product_name', 'like', '%' . $query . '%')->get();
 
-        if (!$query) {
-            return redirect()->back()->with('error', 'Vui lòng nhập từ khóa tìm kiếm');
-        }
-
-        // Tìm trong bảng tbl_product theo tên sản phẩm
-        $products = Product::where('product_name', 'LIKE', "%{$query}%")->get();
-
-        return view('pages.search.search', compact('products', 'query'));
+        return view('pages.search.search')->with('category', $cate_product)->with('brand', $brand_product)->with('search_product', $search_product);
 
     }
 }
