@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -179,5 +179,12 @@ class ProductController extends Controller
 
         return view('pages.product.product-details')->with('category', $cate_product)->with('brand', $brand_product)->with('details_product', $details_product)->with('related_product', $related_product);
     }
+    public function show($product_id)
+    {
+        $cate_product = DB::table('category_product')->where('category_status', '0')->orderBy('category_id', 'desc')->get();
+        $brand_product = DB::table('brand_product')->where('brand_status', '0')->orderBy('brand_id', 'desc')->get();
+        $product = Product::findOrFail($product_id); // Tìm sản phẩm theo ID
 
+        return view('pages.product.product-detail')->with('category', $cate_product)->with('brand', $brand_product)->with('product', $product);
+    }
 }

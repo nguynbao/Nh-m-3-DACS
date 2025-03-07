@@ -99,16 +99,16 @@
                                 <li><a href="{{ URL::to('/show-cart') }}"><i class="fa fa-shopping-cart"></i> Cart</a>
                                 </li>
                                 @if(Auth::check())
-                                <li>
-                                    <a href="{{ url('/user-profile') }}">
-                                        <i class="fa fa-user"></i> Welcome, {{ Auth::user()->name }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('/logout') }}"><i class="fa fa-lock"></i> Logout</a>
-                                </li>
+                                    <li>
+                                        <a href="{{ url('/user-profile') }}">
+                                            <i class="fa fa-user"></i> Welcome, {{ Auth::user()->name }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url('/logout') }}"><i class="fa fa-lock"></i> Logout</a>
+                                    </li>
                                 @else
-                                <li><a href="{{ url('/login-checkout') }}"><i class="fa fa-lock"></i> Login</a></li>
+                                    <li><a href="{{ url('/login-checkout') }}"><i class="fa fa-lock"></i> Login</a></li>
                                 @endif
 
                             </ul>
@@ -147,10 +147,12 @@
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="search_box pull-right">
-                            <input type="text" placeholder="Search" />
-                        </div>
+                        <form action="/search" method="GET" class="search_box pull-right">
+                            <input type="text" name="q" placeholder="Search" />
+                            <button type="submit">🔍</button>
+                        </form>
                     </div>
+
                 </div>
             </div>
         </div><!--/header-bottom-->
@@ -237,9 +239,9 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     @foreach ($category as $key => $cate)
-                                    <h4 class="panel-title"><a
-                                            href="{{URL::to('/danh-muc-sp/' . $cate->category_id) }}">{{ $cate->category_name }}</a>
-                                    </h4>
+                                        <h4 class="panel-title"><a
+                                                href="{{URL::to('/danh-muc-sp/' . $cate->category_id) }}">{{ $cate->category_name }}</a>
+                                        </h4>
                                     @endforeach
                                 </div>
                             </div>
@@ -252,24 +254,24 @@
                                 <ul class="nav nav-pills nav-stacked">
                                     @foreach ($brand as $key => $br)
 
-                                    <li><a href="{{URL::to('/thuong-hieu-sp/' . $br->brand_id) }}">
-                                            {{ $br->brand_name }}</a></li>
+                                        <li><a href="{{URL::to('/thuong-hieu-sp/' . $br->brand_id) }}">
+                                                {{ $br->brand_name }}</a></li>
                                     @endforeach
 
                                 </ul>
                             </div>
                         </div><!--/brands_products-->
 
-                        <!--price-range-->
-                        <!-- <div class="price-range">
+                        <!-- price-range-->
+                        <div class="price-range">
                             <h2>Price Range</h2>
                             <div class="well text-center">
                                 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600"
                                     data-slider-step="5" data-slider-value="[250,450]" id="sl2"><br />
                                 <b class="pull-left">$ 0</b> <b class="pull-right">$ 600</b>
                             </div>
-                        </div> -->
-                        <!--/price-range-->
+                        </div>
+                        <!--/price-range -->
 
 
 

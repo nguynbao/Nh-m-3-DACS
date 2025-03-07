@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -15,5 +16,18 @@ class HomeController extends Controller
 
         return view('pages.home')->with('category', $cate_product)->with('brand', $brand_product)->with('all_product', $all_product);
     }
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
 
+        if (!$query) {
+            return redirect()->back()->with('error', 'Vui lòng nhập từ khóa tìm kiếm');
+        }
+
+        // Tìm trong bảng tbl_product theo tên sản phẩm
+        $products = Product::where('product_name', 'LIKE', "%{$query}%")->get();
+
+        return view('pages.search.search', compact('products', 'query'));
+
+    }
 }
