@@ -15,6 +15,7 @@ Route::middleware(['web'])->group(function () {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/trang-chu', [HomeController::class, 'index']);
     Route::post('/search', [HomeController::class, 'search']);
+    Route::get('/show-contact', [HomeController::class, 'show_contact']);
 
     //danh muc
 

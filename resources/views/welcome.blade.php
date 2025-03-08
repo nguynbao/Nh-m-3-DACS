@@ -98,7 +98,7 @@
                                             <i class="fa fa-user"></i> Welcome, {{ Auth::user()->name }}
                                         </a>
                                         <ul style="display: none; position: absolute; top: 100%; left: 0; background-color: white; padding: 10px; 
-                                                        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); list-style: none; min-width: 120px;"
+                                                                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); list-style: none; min-width: 120px;"
                                             class="logout-menu">
                                             <li>
                                                 <a href="{{ url('/logout') }}"
@@ -155,7 +155,7 @@
                                 <li class="dropdown"><a href="#">News<i class="fa fa-angle-down"></i></a>
                                 </li>
                                 <li><a href="{{ URL::to('/show-cart') }}">Cart</a></li>
-                                <li><a href="contact-us.html">Contact</a></li>
+                                <li><a href="{{ URL::to('/show-contact') }}">Contact</a></li>
                             </ul>
                         </div>
                     </div>

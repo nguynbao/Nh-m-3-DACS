@@ -26,4 +26,10 @@ class HomeController extends Controller
         return view('pages.search.search')->with('category', $cate_product)->with('brand', $brand_product)->with('search_product', $search_product);
 
     }
+    public function show_contact()
+    {
+        $cate_product = DB::table('category_product')->where('category_status', '0')->orderBy('category_id', 'desc')->get();
+        $brand_product = DB::table('brand_product')->where('brand_status', '0')->orderBy('brand_id', 'desc')->get();
+        return view('pages.contact.contact')->with('category', $cate_product)->with('brand', $brand_product);
+    }
 }
