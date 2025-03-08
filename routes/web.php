@@ -7,6 +7,7 @@ use App\Http\Controllers\BrandProduct;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckOutController;
+use App\Http\Controllers\BannerController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -95,4 +96,13 @@ Route::middleware(['web'])->group(function () {
     Route::get('/delete-customer/{customer_id}', [CheckOutController::class, 'delete_customer']);
     Route::get('/edit-customer/{customer_id}', [CheckOutController::class, 'edit_customer']);
     Route::post('/update-customer/{customer_id}', [CheckOutController::class, 'update_customer']);
+
+    //Banner
+    Route::get('/manage-banner', [BannerController::class, 'show_banner']);
+    Route::get('/add-banner', [BannerController::class, 'add_banner']);
+    Route::post('/save-banner', [BannerController::class, 'save_banner']);
+    Route::get('/delete-banner/{banner_id}', [BannerController::class, 'delete_banner']);
+    Route::get('/edit-banner/{banner_id}', [BannerController::class, 'edit_banner']);
+    Route::post('/update-banner/{banner_id}', [BannerController::class, 'update_banner']);
+
 });
