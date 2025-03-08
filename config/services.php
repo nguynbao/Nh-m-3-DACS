@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'facebook' => [
+        'client_id' => '1358443255507220', //client face của bạn
+        'client_secret' => 'bd95ceac8af8db0d51a806c174ddf2b3', //client app service face của bạn
+        'redirect' => 'http://127.0.0.1:8000/admin/callback' //callback trả về
+    ],
 ];

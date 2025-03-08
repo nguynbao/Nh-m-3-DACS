@@ -52,9 +52,10 @@
                                         {{-- Thêm các phương thức thanh toán khác ở đây --}}
 
                                     </div>
-
+                                    
                                     <button type="submit" class="btn btn-primary">Xác nhận đơn hàng</button>
                                 </form>
+                                
                             </div>
                         </div>
                     </div>

@@ -23,13 +23,16 @@ Route::middleware(['web'])->group(function () {
     Route::get('/thuong-hieu-sp/{brand_id}', [BrandProduct::class, 'show_brand']);
     Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'show_product']);
 
-
+    //Login facebook
+    Route::get('/login-facebook', [AdminController::class, 'login_facebook']);
+    Route::get('/admin/callback', [AdminController::class, 'callback_facebook']);
 
     // Admin
     Route::get('/admin', [AdminController::class, 'index']);
     Route::get('/dashboard', [AdminController::class, 'show_dashboard']);
     Route::get('/logout', [AdminController::class, 'logout']);
     Route::post('/dashboard', [AdminController::class, 'login'])->name('admin.dashboard');
+
 
 
     // CategoryProductController
@@ -66,6 +69,14 @@ Route::middleware(['web'])->group(function () {
     Route::get('/show-cart', [CartController::class, 'show_cart'])->name('show-cart');
     Route::get('/xoa-cart/{product_id}', [CartController::class, 'dalete_cart']);
     Route::get('/update-cart/{id}/{action}', [CartController::class, 'updateCart']);
+    //coupon
+    Route::post('/check-coupon', [cartController::class, 'check_coupon']);
+    Route::get('/manage-coupon', [cartController::class, 'show_coupon']);
+    Route::get('/add-coupon', [cartController::class, 'add_coupon']);
+    Route::get('/edit-coupon/{coupon_id}', [cartController::class, 'edit_coupon']);
+    Route::get('/delete-coupon/{coupon_id}', [cartController::class, 'delete_coupon']);
+    Route::post('/save-coupon', [cartController::class, 'save_coupon']);
+    Route::post('/update-coupon/{coupon_id}', [cartController::class, 'update_coupon']);
 
     //checkout
     Route::get('/login-checkout', [CheckOutController::class, 'login_checkout']);
@@ -83,6 +94,6 @@ Route::middleware(['web'])->group(function () {
     Route::get('/delete-customer/{customer_id}', [CheckOutController::class, 'delete_customer']);
     Route::get('/edit-customer/{customer_id}', [CheckOutController::class, 'edit_customer']);
     Route::post('/update-customer/{customer_id}', [CheckOutController::class, 'update_customer']);
-    
+
 
 });
