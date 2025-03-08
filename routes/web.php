@@ -71,6 +71,7 @@ Route::middleware(['web'])->group(function () {
     Route::get('/update-cart/{id}/{action}', [CartController::class, 'updateCart']);
     //coupon
     Route::post('/check-coupon', [cartController::class, 'check_coupon']);
+    Route::get('/remove-coupon', [CartController::class, 'remove_coupon']);
     Route::get('/manage-coupon', [cartController::class, 'show_coupon']);
     Route::get('/add-coupon', [cartController::class, 'add_coupon']);
     Route::get('/edit-coupon/{coupon_id}', [cartController::class, 'edit_coupon']);
@@ -94,6 +95,4 @@ Route::middleware(['web'])->group(function () {
     Route::get('/delete-customer/{customer_id}', [CheckOutController::class, 'delete_customer']);
     Route::get('/edit-customer/{customer_id}', [CheckOutController::class, 'edit_customer']);
     Route::post('/update-customer/{customer_id}', [CheckOutController::class, 'update_customer']);
-
-
 });

@@ -9,6 +9,18 @@
                 </ol>
             </div>
 
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             @if (!empty($cart) && count($cart) > 0)
                 <div class="table-responsive cart_info">
                     <table class="table table-condensed">
@@ -68,25 +80,28 @@
                 <div class="col-sm-6">
                     <div class="total_area">
                         <ul>
-                            <li>Shipping Cost <span>Free</span></li>
-                            <li>Total
-                                <span>
-                                    {{ number_format(collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']), 0, ',', '.') }}
-                                    VNĐ
-                                </span>
-                            </li>
+                            <li>Tổng tiền <span>{{ number_format($total, 0, ',', '.') }} VNĐ</span></li>
+
+                            @if(Session::has('coupon'))
+                                <li>Mã giảm giá: {{ Session::get('coupon')['name'] }}
+                                    <a href="{{ url('/remove-coupon') }}" class="btn btn-danger btn-sm">Xóa</a>
+                                </li>
+                                <li>Số tiền giảm <span>{{ number_format(Session::get('coupon')['discount'], 0, ',', '.') }} VNĐ</span></li>
+                                <li>Thành tiền <span>{{ number_format($final_total, 0, ',', '.') }} VNĐ</span></li>
+                            @endif
+
+                            <li>Phí vận chuyển <span>Free</span></li>
                         </ul>
                         <div style="display: flex; justify-content: space-around;">
-
-                            @if (!empty($cart) && count($cart) > 0)
+                            @if(!empty($cart) && count($cart) > 0)
                                 <form action="{{ URL::to('/check-coupon') }}" method="post" style="display: flex;">
                                     @csrf
                                     <input style="width: 150px;" type="text" name="coupon" class="form-control"
                                         placeholder="Nhập mã giảm giá">
                                     <input type="submit" class="btn btn-default check_coupon" name="check_coupon"
-                                        value="Tính mã giảm giá">
+                                        value="Áp dụng">
                                 </form>
-                                <a class="btn btn-default check_out" href="{{ URL::to('/checkout') }}">Buy</a>
+                                <a class="btn btn-default check_out" href="{{ URL::to('/checkout') }}">Thanh toán</a>
                             @endif
                         </div>
                     </div>

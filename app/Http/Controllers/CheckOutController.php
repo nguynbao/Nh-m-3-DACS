@@ -107,14 +107,43 @@ class CheckOutController extends Controller
             $user = Auth::user();
         }
 
-        $cate_product = DB::table('category_product')->where('category_status', '0')->orderBy('category_id', 'desc')->get();
-        $brand_product = DB::table('brand_product')->where('brand_status', '0')->orderBy('brand_id', 'desc')->get();
+        $cate_product = DB::table('category_product')
+            ->where('category_status', '0')
+            ->orderby('category_id', 'desc')
+            ->get();
+
+        $brand_product = DB::table('brand_product')
+            ->where('brand_status', '0')
+            ->orderby('brand_id', 'desc')
+            ->get();
+
+        $cart = Session::get('cart', []);
+
+        // Calculate original total
+        $total = 0;
+        foreach ($cart as $item) {
+            $total += $item['price'] * $item['quantity'];
+        }
+
+        // Apply coupon discount if available
+        $discount = 0;
+        $coupon_info = null;
+
+        if (Session::has('coupon')) {
+            $coupon_info = Session::get('coupon');
+            $discount = $coupon_info['discount'];
+        }
+
+        $final_total = max(0, $total - $discount);
 
         return view('pages.checkout.show_checkout')
             ->with('category', $cate_product)
             ->with('brand', $brand_product)
             ->with('cart', $cart)
-            ->with('user', $user);
+            ->with('total', $total)
+            ->with('discount', $discount)
+            ->with('final_total', $final_total)
+            ->with('coupon_info', $coupon_info);
     }
 
     public function save_checkout(Request $request)
@@ -139,6 +168,17 @@ class CheckOutController extends Controller
                 $total_amount += $item['product_price'] * $item['product_qty'];
             }
 
+            $discount = 0;
+            $coupon_id = null;
+
+            if (Session::has('coupon')) {
+                $coupon_info = Session::get('coupon');
+                $discount = $coupon_info['discount'];
+                $coupon_id = $coupon_info['id'];
+            }
+
+            $total_amount = max(0, $total_amount - $discount);
+
             // Create order
             $order = new Order();
             $order->user_id = Auth::id();
@@ -149,6 +189,9 @@ class CheckOutController extends Controller
             $order->payment_method = $request->payment_method;
             $order->payment_status = $request->payment_method === 'cash_on_delivery' ?
                 Order::PAYMENT_STATUS_PENDING : Order::PAYMENT_STATUS_PENDING;
+            $order->coupon_id = $coupon_id;
+            $order->created_at = Carbon::now();
+            $order->updated_at = Carbon::now();
             $order->save();
 
             // Create order details
@@ -166,6 +209,7 @@ class CheckOutController extends Controller
 
             // Clear cart after successful order
             Session::forget('cart');
+            Session::forget('coupon');
 
             return redirect('/order-complete/' . $order->order_id);
         } catch (\Exception $e) {
@@ -212,7 +256,20 @@ class CheckOutController extends Controller
                 $total += $item['price'] * $item['quantity'];
             }
 
+            $discount = 0;
+            $coupon_id = null;
+
+            if (Session::has('coupon')) {
+                $coupon_info = Session::get('coupon');
+                $discount = $coupon_info['discount'];
+                $coupon_id = $coupon_info['id'];
+                $total = max(0, $total - $discount);
+            }
+
             $order->total_amount = $total;
+            $order->coupon_id = $coupon_id;
+            $order->payment_status = 'Chưa thanh toán';
+            $order->discount_amount = $discount;
             $order->created_at = Carbon::now();
             $order->save();
 
@@ -346,6 +403,4 @@ class CheckOutController extends Controller
 
         return redirect()->back()->with('success', 'Xóa danh mục thành công.');
     }
-
-
 }
