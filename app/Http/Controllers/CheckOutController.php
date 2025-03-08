@@ -293,6 +293,59 @@ class CheckOutController extends Controller
 
         return redirect()->back()->with('success', 'Đơn hàng đã được xác nhận thành công.');
     }
+    public function show_customer()
+    {
+        $this->check();
+        $all_customer = DB::table('users')
+            ->get();
+        $manage_customer = view('admin.manage_customer')->with('all_customer', $all_customer);
+        return view('admin_layout')->with('admin.manage_customer', $manage_customer);
+    }
+    public function edit_customer($customer_id)
+    {
+        $this->check();
+        $edit_customer = DB::table('users')->where('id', $customer_id)->get();
+        $manager = view('admin.edit_customer')->with('edit_customer', $edit_customer);
+
+        return view('admin_layout')->with('admin.edit_customer', $manager);
+    }
+    public function update_customer(Request $request, $customer_id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:15',
+            'password' => 'nullable|min:6', // Không bắt buộc nhập mật khẩu mới
+        ]);
+
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+        ];
+
+        // Chỉ cập nhật password nếu người dùng nhập
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        DB::table('users')->where('id', $customer_id)->update($data);
+
+        return redirect('/manage-customer')->with('message', 'Cập nhật thành công!');
+    }
+
+    public function delete_customer($customer_id)
+    {
+        $customer = DB::table('users')->where('id', $customer_id)->first();
+        if (!$customer) {
+            return redirect()->back()->with('error', 'Danh mục không tồn tại.');
+        }
+
+        // Xóa danh mục
+        DB::table('users')->where('id', $customer_id)->delete();
+
+        return redirect()->back()->with('success', 'Xóa danh mục thành công.');
+    }
 
 
 }

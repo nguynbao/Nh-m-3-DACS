@@ -79,5 +79,10 @@ Route::middleware(['web'])->group(function () {
     Route::get('/order-complete', [CheckOutController::class, 'order_complete']);
     Route::get('/manage-order', [CheckOutController::class, 'show_order']);
     Route::get('/confirm-order/{order_id}', [CheckOutController::class, 'confirm_order']);
+    Route::get('/manage-customer', [CheckOutController::class, 'show_customer']);
+    Route::get('/delete-customer/{customer_id}', [CheckOutController::class, 'delete_customer']);
+    Route::get('/edit-customer/{customer_id}', [CheckOutController::class, 'edit_customer']);
+    Route::post('/update-customer/{customer_id}', [CheckOutController::class, 'update_customer']);
+    
 
 });

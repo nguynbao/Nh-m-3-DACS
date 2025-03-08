@@ -6,24 +6,24 @@
                 <header class="panel-heading">
                     Sửa danh mục sản phẩm
                 </header>
-                <?php 
+                @if (session()->has('message'))
+                        <span class="text-alert" style="
+                    text-align: center;
+                    color: red;
+                    width: 100%;
+                    font-size: 20px;
+                    font-weight: 600;">
+                            {{ session('message') }}
+                        </span>
+                        {{ session()->forget('message') }}
+                @endif
 
-                                        $message = Session::get('message');
-    if ($message) {
-        echo '<span class="text-alert" style="
-                                            text-align: center;
-                                            color: red;
-                                            width: 100%;
-                                            font-size: 20px;
-                                            font-weight: 600;">' . $message . '</span>';
-        session()->put('message', null);
-    }
-                                        ?>
 
                 <div class="panel-body">
                     @foreach ($edit_category_product as $key => $edit_value)
                         <div class="position-center">
-                            <form role="form" action="{{URL::to('/update-category/' . $edit_value->category_id)}}" method="post">
+                            <form role="form" action="{{URL::to('/update-category/' . $edit_value->category_id)}}"
+                                method="post">
                                 @csrf
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Tên danh mục</label>

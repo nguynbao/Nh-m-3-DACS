@@ -3,7 +3,7 @@
     <div class="table-agile-info">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Liệt kê đơn hàng
+                Liệt kê Khách hàng
             </div>
             <div class="row w3-res-tb">
                 <div class="col-sm-5 m-b-xs">
@@ -36,27 +36,27 @@
                                 </label>
                             </th>
                             <th>Tên Khách hàng</th>
-                            <th>Ghi chú</th>
-                            <th>Ngày đặt</th>
-                            <th>Trạng thái</th>
-                            <th>phương thức thanh toán</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Password</th>
 
                             <th style="width:30px;"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($all_order as $key => $order)
+                        @foreach ($all_customer as $key => $customer)
 
                             <tr>
                                 <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-                                <td>{{($order->shipping_name)}}</td>
-                                <td>{{($order->shipping_notes)}}</td>
-                                <td>{{($order->order_date)}}</td>
-                                <td>{{($order->order_status)}}</td>
-                                <td>{{($order->payment_method)}}</td>
+                                <td>{{($customer->name)}}</td>
+                                <td>{{($customer->email)}}</td>
+                                <td>{{($customer->phone)}}</td>
+                                <td>{{ Str::limit($customer->password, 10, '...') }}</td>
                                 <td>
-                                    <a href="{{ URL::to('/confirm-order/' . $order->order_id) }}" class="active"
-                                        ui-toggle-class="">Duyệt đơn hàng</a>
+                                    <a href="{{ URL::to('/edit-customer/' . $customer->id) }}" class="active"
+                                        ui-toggle-class="">Sửa</a>
+                                    <a href="{{ URL::to('/delete-customer/' . $customer->id) }}" class="active"
+                                        ui-toggle-class="">Xóa</a>
                                 </td>
                             </tr>
                         @endforeach
