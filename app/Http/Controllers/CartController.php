@@ -21,24 +21,22 @@ class CartController extends Controller
 
     public function check_coupon(Request $request)
     {
-        $coupon_code = $request->coupon_code;
+        $coupon_code = $request->coupon;
 
-        // Kiểm tra xem mã có trong DB không
-        $coupon = DB::table('coupons')
-            ->where('coupon_name', $coupon_code)
-            ->first();
+        // Tìm mã giảm giá trong cơ sở dữ liệu
+        $coupon = DB::table('coupons')->where('coupon_name', $coupon_code)->first();
 
         if (!$coupon) {
-            return redirect()->back()->with('error', 'Mã giảm giá không hợp lệ!');
+            return redirect()->back()->with('error', 'Mã giảm giá không tồn tại!');
         }
 
-        // Kiểm tra mã giảm giá có còn số lượng không
+        // Kiểm tra số lượng mã giảm giá còn lại
         if ($coupon->coupon_quantity <= 0) {
             return redirect()->back()->with('error', 'Mã giảm giá đã hết lượt sử dụng!');
         }
 
         // Kiểm tra ngày hết hạn (nếu có)
-        if (strtotime($coupon->coupon_date) < strtotime(now())) {
+        if ($coupon->coupon_date && strtotime($coupon->coupon_date) < strtotime(now())) {
             return redirect()->back()->with('error', 'Mã giảm giá đã hết hạn!');
         }
 
@@ -46,9 +44,21 @@ class CartController extends Controller
         Session::put('coupon', [
             'name' => $coupon->coupon_name,
             'discount' => $coupon->coupon_desc,
+            'id' => $coupon->coupon_id
         ]);
 
+        // Giảm số lượng mã giảm giá đi 1
+        DB::table('coupons')
+            ->where('coupon_id', $coupon->coupon_id)
+            ->update(['coupon_quantity' => $coupon->coupon_quantity - 1]);
+
         return redirect()->back()->with('success', 'Áp dụng mã giảm giá thành công!');
+    }
+
+    public function remove_coupon()
+    {
+        Session::forget('coupon');
+        return redirect()->back()->with('success', 'Đã xóa mã giảm giá!');
     }
 
     public function addToCart(Request $request)
@@ -113,9 +123,11 @@ class CartController extends Controller
         }
 
         // Kiểm tra nếu có mã giảm giá
+        $coupon_info = null;
         $discount = 0;
         if (Session::has('coupon')) {
-            $discount = Session::get('coupon')['discount'];
+            $coupon_info = Session::get('coupon');
+            $discount = $coupon_info['discount'];
         }
 
         $final_total = max(0, $total - $discount); // Tổng tiền sau giảm giá
@@ -126,7 +138,8 @@ class CartController extends Controller
             ->with('cart', $cart)
             ->with('total', $total)
             ->with('discount', $discount)
-            ->with('final_total', $final_total);
+            ->with('final_total', $final_total)
+            ->with('coupon_info', $coupon_info);
     }
     public function dalete_cart($product_id)
     {
@@ -165,7 +178,6 @@ class CartController extends Controller
     {
         $this->check();
         return view('admin.add_coupon');
-
     }
     public function show_coupon()
     {
@@ -203,7 +215,6 @@ class CartController extends Controller
         $data['coupon_quantity'] = $request->coupon_quantity;
         DB::table('coupons')->where('coupon_id', $coupon_id)->update($data);
         return Redirect::to('all-coupon');
-
     }
     public function delete_coupon($coupon_id)
     {
@@ -217,9 +228,4 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Xóa danh mục thành công.');
     }
-
-
-
-
-
 }
