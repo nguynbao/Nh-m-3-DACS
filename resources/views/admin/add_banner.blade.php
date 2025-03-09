@@ -9,18 +9,18 @@
                 <div class="panel-body">
                     @if (session('message'))
                         <div class="text-alert" style="
-                                                         text-align: center;
-                                                         color: red;
-                                                         width: 100%;
-                                                         font-size: 20px;
-                                                         font-weight: 600;">
+                                                                 text-align: center;
+                                                                 color: red;
+                                                                 width: 100%;
+                                                                 font-size: 20px;
+                                                                 font-weight: 600;">
                             {{ session('message') }}
                         </div>
                         @php session()->forget('message'); @endphp
                     @endif
 
                     <div class="position-center">
-                        <form role="form" action="{{URL::to('/save-banner')}}" method="post">
+                        <form role="form" action="{{URL::to('/save-banner')}}" method="post" nctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tên Banner</label>
@@ -34,7 +34,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Mô tả</label>
-                                <textarea type="password" name="banner_desc" class="form-control" id="exampleInputPassword1"
+                                <textarea type="text" name="banner_desc" class="form-control" id="exampleInputPassword1"
                                     placeholder="Mô tả banner"> </textarea>
                             </div>
                             <div class="form-group">

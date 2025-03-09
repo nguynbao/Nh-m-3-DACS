@@ -39,6 +39,8 @@ class BannerController extends Controller
     }
     public function save_banner(Request $request)
     {
+        dd($request->file('banner_image'));
+
         $validator = Validator::make($request->all(), [
             'banner_name' => 'required|string|max:255',
             'banner_desc' => 'required|string',
@@ -68,6 +70,8 @@ class BannerController extends Controller
         } else {
             $data['banner_image'] = null;
         }
+
+
 
         try {
             DB::table('tbl_banner')->insert($data);

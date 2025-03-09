@@ -10,20 +10,21 @@
                     @if (session('message'))
                         <div class="text-alert"
                             style="
-                                                                                                                         text-align: center;
-                                                                                                                         color: red;
-                                                                                                                         width: 100%;
-                                                                                                                         font-size: 20px;
-                                                                                                                         font-weight: 600;">
+                                                                                                                                                 text-align: center;
+                                                                                                                                                 color: red;
+                                                                                                                                                 width: 100%;
+                                                                                                                                                 font-size: 20px;
+                                                                                                                                                 font-weight: 600;">
                             {{ session('message') }}
                         </div>
                         @php session()->forget('message'); @endphp
                     @endif
                     @foreach ($edit_banner as $key => $edit_value)
                         <div class="position-center">
-                            <form role="form" action="{{URL::to('/update-banner/' . $edit_value->banner_id)}}" method="post">
+                            <form role="form" action="{{URL::to('/update-banner/' . $edit_value->banner_id)}}" method="post"
+                                nctype="multipart/form-data">
                                 @csrf
-                                <div class="form-group">
+                                <div class=" form-group">
                                     <label for="exampleInputEmail1">Tên Banner</label>
                                     <input type="text" name="banner_name" class="form-control" id="exampleInputEmail1"
                                         placeholder="Tên Banner">
