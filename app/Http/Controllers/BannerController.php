@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Banner;
 class BannerController extends Controller
 {
@@ -38,7 +39,6 @@ class BannerController extends Controller
     }
     public function save_banner(Request $request)
     {
-        // Kiểm tra dữ liệu đầu vào
         $validator = Validator::make($request->all(), [
             'banner_name' => 'required|string|max:255',
             'banner_desc' => 'required|string',
@@ -56,23 +56,29 @@ class BannerController extends Controller
             'banner_status' => (int) $request->banner_status,
         ];
 
-
-        // Xử lý upload hình ảnh
         if ($request->hasFile('banner_image')) {
-            $image = $request->file('banner_image');
-            $image_name = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/banners'), $image_name);
-            $data['banner_image'] = $image_name;
+            try {
+                $image = $request->file('banner_image');
+                $image_name = time() . '.' . $image->getClientOriginalExtension();
+                $path = $image->storeAs('public/uploads/banners', $image_name);
+                $data['banner_image'] = str_replace('public/', '', $path);
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Lỗi upload ảnh: ' . $e->getMessage());
+            }
         } else {
-            $data['banner_image'] = ""; // Nếu không có ảnh
+            $data['banner_image'] = null;
         }
 
-        // Thêm dữ liệu vào database
-        DB::table('tbl_banner')->insert($data);
-        Session::put('message', "Bạn đã thêm sản phẩm thành công");
+        try {
+            DB::table('tbl_banner')->insert($data);
+            Session::put('message', "Bạn đã thêm banner thành công");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Lỗi lưu vào DB: ' . $e->getMessage());
+        }
 
         return Redirect::to('add-banner');
     }
+
     public function edit_banner($banner_id)
     {
         $this->check();
@@ -83,22 +89,33 @@ class BannerController extends Controller
 
     public function update_banner(Request $request, $banner_id)
     {
-        $data = array();
-        $data['banner_name'] = $request->banner_name;
-        $data['banner_desc'] = $request->banner_desc;
-        $data['banner_status'] = $request->banner_status;
+        $banner = DB::table('tbl_banner')->where('banner_id', $banner_id)->first();
+        if (!$banner) {
+            return redirect()->back()->with('error', 'Banner không tồn tại.');
+        }
+
+        $data = [
+            'banner_name' => $request->banner_name,
+            'banner_desc' => $request->banner_desc,
+            'banner_status' => (int) $request->banner_status,
+        ];
 
         if ($request->hasFile('banner_image')) {
+            // Xóa ảnh cũ nếu có
+            if (!empty($banner->banner_image)) {
+                Storage::delete('public/uploads/banners/' . $banner->banner_image);
+            }
+
+            // Lưu ảnh mới
             $image = $request->file('banner_image');
             $image_name = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/banners'), $image_name);
+            $image->storeAs('public/uploads/banners', $image_name);
             $data['banner_image'] = $image_name;
         }
 
         DB::table('tbl_banner')->where('banner_id', $banner_id)->update($data);
 
-        Session::put('message', 'Cập nhật sản phẩm thành công!');
-        return Redirect::to('/manage-banner');
+        return Redirect::to('/manage-banner')->with('success', 'Cập nhật banner thành công!');
     }
     public function delete_banner($banner_id)
     {

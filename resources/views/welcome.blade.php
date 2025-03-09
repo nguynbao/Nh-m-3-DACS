@@ -43,34 +43,6 @@
                         </ol>
 
                         <div class="carousel-inner">
-                            <div class="item active">
-                                <div class="col-sm-6">
-                                    <h1><span>E</span>-SHOPPER</h1>
-                                    <h2>Free E-Commerce Template</h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua. </p>
-                                    <button type="button" class="btn btn-default get">Get it now</button>
-                                </div>
-                                <div class="col-sm-6">
-                                    <img src="{{asset('fontend/images/girl1.jpg')}}" class="girl img-responsive"
-                                        alt="" />
-                                    <img src="{{asset('fontend/images/pricing.png')}}" class="pricing" alt="" />
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="col-sm-6">
-                                    <h1><span>E</span>-SHOPPER</h1>
-                                    <h2>100% Responsive Design</h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua. </p>
-                                    <button type="button" class="btn btn-default get">Get it now</button>
-                                </div>
-                                <div class="col-sm-6">
-                                    <img src="{{asset('fontend/images/girl2.jpg')}}" class="girl img-responsive"
-                                        alt="" />
-                                    <img src="{{asset('fontend/images/pricing.png')}}" class="pricing" alt="" />
-                                </div>
-                            </div>
                             @php
                                 $i = 0;
                             @endphp
@@ -80,18 +52,18 @@
                                                         @endphp
                                                         <div class="item {{ $i == 1 ? 'active' : '' }}">
                                                             <div class="col-sm-12">
-                                                                <img src="{{ asset('uploads/banners/' . $banner->banner_image) }}"
-                                                                    alt="{{ $banner->banner_desc }}" class=" img-responsive">
+                                                                <img src="{{ asset('uploads/banners/' . $slider->banner_image) }}"
+                                                                    alt="{{ $slider->banner_desc }}" class=" img-responsive">
                                                             </div>
                                                         </div>
                             @endforeach
 
                         </div>
 
-                        <a href=" #slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+                        <a class="left carousel-control" href="#slider-carousel" data-slide="prev">
                             <i class="fa fa-angle-left"></i>
                         </a>
-                        <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+                        <a class="right carousel-control" href="#slider-carousel" data-slide="next">
                             <i class="fa fa-angle-right"></i>
                         </a>
                     </div>
@@ -156,12 +128,12 @@
 
     @include('components.footer')
 
-    <script src="{{asset('public/fontend/js/jquery.js')}}"></script>
-    <script src="{{asset('public/fontend/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('public/fontend/js/jquery.scrollUp.min.js')}}"></script>
-    <script src="{{asset('public/fontend/js/price-range.js')}}"></script>
-    <script src="{{asset('public/fontend/js/jquery.prettyPhoto.js')}}"></script>
-    <script src="{{asset('public/fontend/js/main.js')}}"></script>
+    <script src="{{asset('fontend/js/jquery.js')}}"></script>
+    <script src="{{asset('fontend/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('fontend/js/jquery.scrollUp.min.js')}}"></script>
+    <script src="{{asset('fontend/js/price-range.js')}}"></script>
+    <script src="{{asset('fontend/js/jquery.prettyPhoto.js')}}"></script>
+    <script src="{{asset('fontend/js/main.js')}}"></script>
 </body>
 
 </html>
