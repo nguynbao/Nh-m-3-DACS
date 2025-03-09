@@ -1,15 +1,15 @@
-/* lg */ 
+/* lg */
 @media (min-width: 1200px) {
 
 }
 
 /* md */
 @media (min-width: 992px) and (max-width: 1199px) {
- 
- 
+
+
 .usa{
 	margin-right: 0;
-} 
+}
 
 .shipping img{
 	width: 100%;
@@ -27,17 +27,60 @@
 	width: 65px;
 }
 
-#cart_items .cart_info .cart_description h4, 
+#cart_items .cart_info .cart_description h4,
 #cart_items .cart_info .cart_description p{
 	text-align: center;
-} 
+}
 
 }
 
+#slider-carousel .carousel-inner {
+    height: 400px !important; /* Đảm bảo carousel-inner có chiều cao cố định */
+    overflow: hidden;
+}
+
+#slider-carousel .item {
+    height: 400px !important; /* Chiều cao cố định cho mỗi slide */
+    transition: none; /* Loại bỏ transition có thể gây ra vấn đề */
+    position: relative;
+}
+
+#slider-carousel .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Force hardware acceleration để tránh flickering */
+#slider-carousel .carousel-inner,
+#slider-carousel .item,
+#slider-carousel .item img {
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    #slider-carousel .carousel-inner,
+    #slider-carousel .item {
+        height: 250px !important;
+    }
+}
 
 /* sm */
 @media (min-width: 768px) and (max-width: 991px) {
-   
+
 .shop-menu ul li a{
 	padding-left: 0;
 }
@@ -295,9 +338,9 @@ ul.sub-menu{
 	text-align: center;
 }
 
-.btn-group.pull-right, 
-.footer-bottom .pull-left, 
-.footer-bottom .pull-right, 
+.btn-group.pull-right,
+.footer-bottom .pull-left,
+.footer-bottom .pull-right,
 .mainmenu.pull-left,
 .media.commnets .pull-left,
 .media-list .pull-left{

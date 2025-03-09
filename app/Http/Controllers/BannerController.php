@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Banner;
+
 class BannerController extends Controller
 {
     public function check()
@@ -24,7 +26,6 @@ class BannerController extends Controller
     {
         $this->check();
         return view('admin.add_banner');
-
     }
     public function show_banner()
     {
@@ -35,12 +36,9 @@ class BannerController extends Controller
 
 
         return view('admin.manage_banner', compact('all_banner'));
-
     }
     public function save_banner(Request $request)
     {
-        dd($request->file('banner_image'));
-
         $validator = Validator::make($request->all(), [
             'banner_name' => 'required|string|max:255',
             'banner_desc' => 'required|string',
@@ -62,16 +60,22 @@ class BannerController extends Controller
             try {
                 $image = $request->file('banner_image');
                 $image_name = time() . '.' . $image->getClientOriginalExtension();
-                $path = $image->storeAs('public/uploads/banners', $image_name);
-                $data['banner_image'] = str_replace('public/', '', $path);
+
+                // Create directory if it doesn't exist
+                $path = public_path('uploads/banners');
+                if (!file_exists($path)) {
+                    mkdir($path, 0777, true);
+                }
+
+                $image->move($path, $image_name);
+
+                $data['banner_image'] = $image_name;
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'Lỗi upload ảnh: ' . $e->getMessage());
             }
         } else {
             $data['banner_image'] = null;
         }
-
-
 
         try {
             DB::table('tbl_banner')->insert($data);
@@ -105,15 +109,23 @@ class BannerController extends Controller
         ];
 
         if ($request->hasFile('banner_image')) {
-            // Xóa ảnh cũ nếu có
             if (!empty($banner->banner_image)) {
-                Storage::delete('public/uploads/banners/' . $banner->banner_image);
+                $old_image_path = public_path('uploads/banners/' . $banner->banner_image);
+                if (file_exists($old_image_path)) {
+                    unlink($old_image_path);
+                }
             }
 
-            // Lưu ảnh mới
             $image = $request->file('banner_image');
             $image_name = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('public/uploads/banners', $image_name);
+
+            $path = public_path('uploads/banners');
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+
+            $image->move($path, $image_name);
+
             $data['banner_image'] = $image_name;
         }
 
@@ -128,10 +140,18 @@ class BannerController extends Controller
         if (!$banner) {
             return redirect()->back()->with('error', 'Danh mục không tồn tại.');
         }
+
+        // Xóa file ảnh nếu có
+        if (!empty($banner->banner_image)) {
+            $image_path = public_path('uploads/banners/' . $banner->banner_image);
+            if (file_exists($image_path)) {
+                unlink($image_path);
+            }
+        }
+
         // Xóa danh mục
         DB::table('tbl_banner')->where('banner_id', $banner_id)->delete();
 
         return redirect()->back()->with('success', 'Xóa danh mục thành công.');
     }
-
 }
