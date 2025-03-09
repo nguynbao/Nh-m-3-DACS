@@ -34,11 +34,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <h2>Đăng nhập</h2>
             @if (session('message'))
                 <div class="text-alert" style="
-                                         text-align: center;
-                                         color: red;
-                                         width: 100%;
-                                         font-size: 20px;
-                                         font-weight: 600;">
+                                             text-align: center;
+                                             color: red;
+                                             width: 100%;
+                                             font-size: 20px;
+                                             font-weight: 600;">
                     {{ session('message') }}
                 </div>
                 @php session()->forget('message'); @endphp
@@ -55,7 +55,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <input type="submit" value="Sign In" name="login">
             </form>
             <div style="display: flex;">
-                <p> <a href="">Đăng nhập bằng facebook</a></p>
+                <p> <a href="{{ URL::to('/login-facebook') }}">Đăng nhập bằng facebook</a></p>
                 <p> <a href="">Đăng nhập bằng google</a></p>
             </div>
         </div>
