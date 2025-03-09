@@ -20,7 +20,7 @@
                     @endif
 
                     <div class="position-center">
-                        <form role="form" action="{{URL::to('/save-banner')}}" method="post" nctype="multipart/form-data">
+                        <form role="form" action="{{URL::to('/save-banner')}}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tên Banner</label>
