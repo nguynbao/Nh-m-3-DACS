@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 use App\Models\Product;
+use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+
 
 class ProductController extends Controller
 {
@@ -161,6 +163,7 @@ class ProductController extends Controller
 
     public function show_product($product_id)
     {
+        $banner = Banner::orderBy('banner_id', 'desc')->take(4)->get();
         $cate_product = DB::table('category_product')->where('category_status', '0')->orderBy('category_id', 'desc')->get();
         $brand_product = DB::table('brand_product')->where('brand_status', '0')->orderBy('brand_id', 'desc')->get();
         $details_product = DB::table('tbl_product')
@@ -177,7 +180,7 @@ class ProductController extends Controller
             ->where('category_product.category_id', $category_id)->whereNotIn('tbl_product.product_id', [$product_id])
             ->get();
 
-        return view('pages.product.product-details')->with('category', $cate_product)->with('brand', $brand_product)->with('details_product', $details_product)->with('related_product', $related_product);
+        return view('pages.product.product-details')->with('category', $cate_product)->with('brand', $brand_product)->with('details_product', $details_product)->with('related_product', $related_product)->with('banner', $banner);
     }
 
 }

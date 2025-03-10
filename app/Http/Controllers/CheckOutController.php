@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Banner;
 use Carbon\Carbon;
 
 
@@ -29,11 +30,11 @@ class CheckOutController extends Controller
         if (Auth::check()) {
             return back()->with('error', 'Bạn đã đăng nhập rồi! Vui lòng tiếp tục thanh toán.');
         }
-
+        $banner = Banner::orderBy('banner_id', 'desc')->take(4)->get();
         $cate_product = DB::table('category_product')->where('category_status', '0')->orderBy('category_id', 'desc')->get();
         $brand_product = DB::table('brand_product')->where('brand_status', '0')->orderBy('brand_id', 'desc')->get();
 
-        return view('pages.checkout.login_checkout')->with('category', $cate_product)->with('brand', $brand_product);
+        return view('pages.checkout.login_checkout')->with('category', $cate_product)->with('brand', $brand_product)->with('banner', $banner);
     }
 
     public function login(Request $request)

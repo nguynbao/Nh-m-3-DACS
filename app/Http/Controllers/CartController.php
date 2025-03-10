@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Banner;
 
 class CartController extends Controller
 {
@@ -103,6 +104,7 @@ class CartController extends Controller
     }
     public function show_cart()
     {
+        $banner = Banner::orderBy('banner_id', 'desc')->take(4)->get();
         $cate_product = DB::table('category_product')
             ->where('category_status', '0')
             ->orderBy('category_id', 'desc')
@@ -139,7 +141,8 @@ class CartController extends Controller
             ->with('total', $total)
             ->with('discount', $discount)
             ->with('final_total', $final_total)
-            ->with('coupon_info', $coupon_info);
+            ->with('coupon_info', $coupon_info)
+            ->with('banner', $banner);
     }
     public function dalete_cart($product_id)
     {
