@@ -38,18 +38,19 @@
                     <div id="slider-carousel" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
                             @foreach ($banner as $key => $slider)
-                            <li data-target="#slider-carousel" data-slide-to="{{ $key }}" {{ $key == 0 ? 'class="active"' : '' }}></li>
+                                <li data-target="#slider-carousel" data-slide-to="{{ $key }}" {{ $key == 0 ? 'class="active"' : '' }}></li>
                             @endforeach
                         </ol>
 
                         <div class="carousel-inner banner-wrapper">
                             @foreach ($banner as $key => $slider)
-                            <div class="item {{ $key == 0 ? 'active' : '' }}">
-                                <div class="banner-container">
-                                    <img src="{{ asset('uploads/banners/' . $slider->banner_image) }}"
-                                        alt="{{ $slider->banner_desc }}" class="banner-image">
+
+                                <div class="item {{ $key == 0 ? 'active' : '' }}">
+                                    <div class="banner-container">
+                                        <img src="{{ asset('uploads/banners/' . $slider->banner_image) }}"
+                                            alt="{{ $slider->banner_desc }}" class="banner-image">
+                                    </div>
                                 </div>
-                            </div>
                             @endforeach
                         </div>
 
@@ -75,9 +76,9 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     @foreach ($category as $key => $cate)
-                                    <h4 class="panel-title"><a
-                                            href="{{URL::to('/danh-muc-sp/' . $cate->category_id) }}">{{ $cate->category_name }}</a>
-                                    </h4>
+                                        <h4 class="panel-title"><a
+                                                href="{{URL::to('/danh-muc-sp/' . $cate->category_id) }}">{{ $cate->category_name }}</a>
+                                        </h4>
                                     @endforeach
                                 </div>
                             </div>
@@ -90,8 +91,8 @@
                                 <ul class="nav nav-pills nav-stacked">
                                     @foreach ($brand as $key => $br)
 
-                                    <li><a href="{{URL::to('/thuong-hieu-sp/' . $br->brand_id) }}">
-                                            {{ $br->brand_name }}</a></li>
+                                        <li><a href="{{URL::to('/thuong-hieu-sp/' . $br->brand_id) }}">
+                                                {{ $br->brand_name }}</a></li>
                                     @endforeach
 
                                 </ul>

@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests;
 use App\Models\Social; //sử dụng model Social
 use App\Models\Login;
+use Illuminate\Support\Facades\Auth;
+
+
 use Laravel\Socialite\Facades\Socialite; //sử dụng Socialite
 
 class AdminController extends Controller
@@ -90,7 +93,7 @@ class AdminController extends Controller
             ->where('admin_email', $admin_email)
             ->where('admin_password', $admin_password)
             ->first();
-        
+
 
         if ($admin == true) {
             Session::put('admin_name', $admin->admin_name);
@@ -108,6 +111,26 @@ class AdminController extends Controller
         Session::put('admin_id', null);
         return view('admin');
     }
+
+
+    public function show_info_admin()
+    {
+        $admin_id = Session::get('admin_id'); // Lấy ID admin từ session
+        if (!$admin_id) {
+            return redirect('/admin')->with('error', 'Bạn chưa đăng nhập!');
+        }
+
+        // Truy vấn thông tin admin từ database
+        $admin = DB::table('tbl_admin')->where('admin_id', $admin_id)->first();
+        // dd($admin);
+        if (!$admin) {
+            return redirect('/admin')->with('error', 'Không tìm thấy thông tin admin!');
+        }
+
+        return view('admin.show_info_admin')->with('admin', $admin);
+    }
+
+
 
 
 

@@ -179,5 +179,5 @@ class ProductController extends Controller
 
         return view('pages.product.product-details')->with('category', $cate_product)->with('brand', $brand_product)->with('details_product', $details_product)->with('related_product', $related_product);
     }
-   
+
 }

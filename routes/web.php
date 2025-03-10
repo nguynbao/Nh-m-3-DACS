@@ -33,6 +33,7 @@ Route::middleware(['web'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'show_dashboard']);
     Route::get('/logout', [AdminController::class, 'logout']);
     Route::post('/dashboard', [AdminController::class, 'login'])->name('admin.dashboard');
+    Route::get('/show-info-admin', [AdminController::class, 'show_info_admin']);
 
 
 
