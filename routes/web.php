@@ -34,6 +34,8 @@ Route::middleware(['web'])->group(function () {
     Route::get('/logout', [AdminController::class, 'logout']);
     Route::post('/dashboard', [AdminController::class, 'login'])->name('admin.dashboard');
     Route::get('/show-info-admin', [AdminController::class, 'show_info_admin']);
+    Route::get('/edit-admin', [AdminController::class, 'edit_admin'])->name('edit_admin');
+    Route::post('/update-admin/{id}', [AdminController::class, 'update_admin'])->name('update_admin');
 
 
 

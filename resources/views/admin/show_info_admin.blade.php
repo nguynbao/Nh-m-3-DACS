@@ -51,7 +51,6 @@
                             <td>{{ $admin->admin_email }}</td>
                             <td>{{ $admin->admin_phone }}</td>
                             <td>
-                                <a href="{{ URL::to('/edit-admin/' . $admin->admin_id) }}" class="active">Sửa</a>
                                 <a href="{{ URL::to('/delete-admin/' . $admin->admin_id) }}" class="active">Xóa</a>
                             </td>
                         </tr>

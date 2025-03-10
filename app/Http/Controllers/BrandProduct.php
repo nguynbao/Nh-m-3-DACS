@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
-
+use App\Models\Banner;
 class BrandProduct extends Controller
 {
     public function check()
@@ -99,13 +99,14 @@ class BrandProduct extends Controller
     }
     public function show_brand($brand_id)
     {
+        $banner = Banner::orderBy('banner_id', 'desc')->take(4)->get();
         $cate_product = DB::table('category_product')->where('category_status', '0')->orderBy('category_id', 'desc')->get();
         $brand_product = DB::table('brand_product')->where('brand_status', '0')->orderBy('brand_id', 'desc')->get();
         $brand_by_id = DB::table('tbl_product')->join('brand_product', 'tbl_product.brand_id', '=', 'brand_product.brand_id')
             ->where('tbl_product.brand_id', '=', $brand_id)->get();
         $br_name = DB::table('brand_product')->where('brand_product.brand_id', $brand_id)->limit(1)->get();
         return view('pages.brand.show_brand')
-            ->with('category', $cate_product)->with('brand', $brand_product)->with('brand_by_id', $brand_by_id)->with('br_name', $br_name);
+            ->with('category', $cate_product)->with('brand', $brand_product)->with('brand_by_id', $brand_by_id)->with('br_name', $br_name)->with('banner', $banner);
     }
 
 }

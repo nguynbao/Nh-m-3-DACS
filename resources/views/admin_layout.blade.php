@@ -60,6 +60,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <li><a href="{{ URL::to('/show-info-admin') }}"><i class=" fa fa-suitcase"></i>Thông tin</a>
                             </li>
                             <li><a href="{{URL::to('/edit-admin') }}"><i class="fa fa-cog"></i> Cài đặt</a></li>
+
                             <li><a href="{{URL::to('/logout')}}"><i class="fa fa-key"></i>Đăng xuất</a></li>
                         </ul>
                     </li>

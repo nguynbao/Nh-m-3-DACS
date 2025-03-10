@@ -130,6 +130,34 @@ class AdminController extends Controller
         return view('admin.show_info_admin')->with('admin', $admin);
     }
 
+    public function edit_admin()
+    {
+        $admin_id = Session::get('admin_id');
+        $admin = DB::table('tbl_admin')->where('admin_id', $admin_id)->first(); // Thêm `first()` để lấy object thay vì collection
+
+        if (!$admin) {
+            return redirect('/admin')->with('error', 'Không tìm thấy thông tin admin!');
+        }
+
+        return view('admin.edit_admin', compact('admin'));
+    }
+
+    public function update_admin(Request $request, $id)
+    {
+        $this->check(); // Kiểm tra admin có đăng nhập không
+
+        $data = [
+            'admin_name' => $request->admin_name,
+            'admin_email' => $request->admin_email,
+            'admin_password' => md5($request->admin_password), // Mã hóa mật khẩu
+            'admin_phone' => $request->admin_phone,
+        ];
+
+        DB::table('tbl_admin')->where('admin_id', $id)->update($data);
+
+        return redirect('/edit-admin')->with('message', 'Cập nhật thông tin thành công!');
+    }
+
 
 
 

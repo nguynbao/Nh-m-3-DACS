@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Banner;
 
 
 class CategoryProductController extends Controller
@@ -102,13 +103,13 @@ class CategoryProductController extends Controller
 
     public function show_cate($category_id)
     {
-
+        $banner = Banner::orderBy('banner_id', 'desc')->take(4)->get();
         $cate_product = DB::table('category_product')->where('category_status', '0')->orderBy('category_id', 'desc')->get();
         $brand_product = DB::table('brand_product')->where('brand_status', '0')->orderBy('brand_id', 'desc')->get();
-        
+
         $category_by_id = DB::table('tbl_product')->join('category_product', 'tbl_product.category_id', '=', 'category_product.category_id')
             ->where('tbl_product.category_id', '=', $category_id)->get();
         $cate_name = DB::table('category_product')->where('category_product.category_id', $category_id)->limit(1)->get();
-        return view('pages.category.show_category')->with('category', $cate_product)->with('brand', $brand_product)->with('category_by_id', $category_by_id)->with('cate_name', $cate_name);
+        return view('pages.category.show_category')->with('category', $cate_product)->with('brand', $brand_product)->with('category_by_id', $category_by_id)->with('cate_name', $cate_name)->with('banner', $banner);
     }
 }

@@ -14,6 +14,7 @@ use App\Models\Banner;
 use Carbon\Carbon;
 
 
+
 class CheckOutController extends Controller
 {
     public function check()
@@ -119,7 +120,7 @@ class CheckOutController extends Controller
             ->get();
 
         $cart = Session::get('cart', []);
-
+        $banner = Banner::orderBy('banner_id', 'desc')->take(4)->get();
         // Calculate original total
         $total = 0;
         foreach ($cart as $item) {
@@ -144,7 +145,8 @@ class CheckOutController extends Controller
             ->with('total', $total)
             ->with('discount', $discount)
             ->with('final_total', $final_total)
-            ->with('coupon_info', $coupon_info);
+            ->with('coupon_info', $coupon_info)
+            ->with('banner', $banner);
     }
 
     public function save_checkout(Request $request)
@@ -309,12 +311,14 @@ class CheckOutController extends Controller
 
     public function order_complete()
     {
+        $banner = Banner::orderBy('banner_id', 'desc')->take(4)->get();
         $cate_product = DB::table('category_product')->where('category_status', '0')->orderBy('category_id', 'desc')->get();
         $brand_product = DB::table('brand_product')->where('brand_status', '0')->orderBy('brand_id', 'desc')->get();
 
         return view('pages.checkout.order_complete')
             ->with('category', $cate_product)
-            ->with('brand', $brand_product);
+            ->with('brand', $brand_product)
+            ->with('banner', $banner);
     }
 
     public function logout(Request $request)
