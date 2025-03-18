@@ -163,7 +163,7 @@ class ProductController extends Controller
 
     public function show_product($product_id)
     {
-        $banner = Banner::orderBy('banner_id', 'desc')->take(4)->get();
+        $banner = Banner::orderBy('banner_id', 'desc')->take(3)->get();
         $cate_product = DB::table('category_product')->where('category_status', '0')->orderBy('category_id', 'desc')->get();
         $brand_product = DB::table('brand_product')->where('brand_status', '0')->orderBy('brand_id', 'desc')->get();
         $details_product = DB::table('tbl_product')
@@ -178,6 +178,7 @@ class ProductController extends Controller
             ->Join('category_product', 'category_product.category_id', '=', 'tbl_product.category_id')
             ->Join('brand_product', 'brand_product.brand_id', '=', 'tbl_product.brand_id')
             ->where('category_product.category_id', $category_id)->whereNotIn('tbl_product.product_id', [$product_id])
+            ->take(3)
             ->get();
 
         return view('pages.product.product-details')->with('category', $cate_product)->with('brand', $brand_product)->with('details_product', $details_product)->with('related_product', $related_product)->with('banner', $banner);

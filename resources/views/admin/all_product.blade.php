@@ -54,8 +54,8 @@
                                 <td>{{($product->category_name)}}</td>
                                 <td>{{($product->brand_name)}}</td>
                                 <td>{{($product->product_name)}}</td>
-                                <td>{!! $product->product_content !!}</td>
-                                <td>{{($product->product_desc)}}</td>
+                                <td>{!! Str::limit($product->product_content, 50) !!}</td>
+                                <td>{{ Str::limit($product->product_desc, 50) }}</td>
                                 <td>{{($product->product_price)}}</td>
                                 <td><img src="{{ asset('uploads/products/' . $product->product_image) }}" width="100"></td>
                                 <td>{{($product->product_size)}}</td>

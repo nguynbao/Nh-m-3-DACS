@@ -104,7 +104,7 @@ class CartController extends Controller
     }
     public function show_cart()
     {
-        $banner = Banner::orderBy('banner_id', 'desc')->take(4)->get();
+        $banner = Banner::orderBy('banner_id', 'desc')->take(3)->get();
         $cate_product = DB::table('category_product')
             ->where('category_status', '0')
             ->orderBy('category_id', 'desc')

@@ -69,7 +69,7 @@
                     </table>
                 </div>
             @else
-                <p class="text-center">Giỏ hàng của bạn đang trống.</p>
+                <p style="font-size: 23px; margin-bottom: 20px;" class="text-center">Your cart is empty.</p>
             @endif
         </div>
     </section> <!--/#cart_items-->
@@ -78,33 +78,62 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <div class="total_area">
-                        <ul>
-                            <li>Tổng tiền <span>{{ number_format($total, 0, ',', '.') }} VNĐ</span></li>
+                    <div class="total_area"
+                        style="padding: 15px; background: #f8f9fa; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                        <ul style="list-style: none; margin: 0; padding: 0;">
+                            <li
+                                style="padding: 10px 15px; font-size: 16px; color: #333; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+                                Total <span
+                                    style="font-weight: bold; color: rgb(84, 105, 201);">{{ number_format($total, 0, ',', '.') }}
+                                    VNĐ</span>
+                            </li>
 
                             @if(Session::has('coupon'))
-                                <li>Mã giảm giá: {{ Session::get('coupon')['name'] }}
-                                    <a href="{{ url('/remove-coupon') }}" class="btn btn-danger btn-sm">Xóa</a>
+                                <li
+                                    style="padding: 10px 15px; font-size: 16px; color: #333; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+                                    Coupon: {{ Session::get('coupon')['name'] }}
+                                    <a href="{{ url('/remove-coupon') }}"
+                                        style="font-size: 12px; padding: 5px 10px; border-radius: 5px; background: #d9534f; color: white; text-decoration: none; border: none;">Xóa</a>
                                 </li>
-                                <li>Số tiền giảm <span>{{ number_format(Session::get('coupon')['discount'], 0, ',', '.') }} VNĐ</span></li>
-                                <li>Thành tiền <span>{{ number_format($final_total, 0, ',', '.') }} VNĐ</span></li>
+                                <li
+                                    style="padding: 10px 15px; font-size: 16px; color: #333; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+                                    Discount <span
+                                        style="font-weight: bold; color: #28a745;">-{{ number_format(Session::get('coupon')['discount'], 0, ',', '.') }}
+                                        VNĐ</span>
+                                </li>
+                                <li
+                                    style="padding: 10px 15px; font-size: 16px; color: #333; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+                                    Final Total <span
+                                        style="font-weight: bold; color: rgb(84, 105, 201);">{{ number_format($final_total, 0, ',', '.') }}
+                                        VNĐ</span>
+                                </li>
                             @endif
 
-                            <li>Phí vận chuyển <span>Free</span></li>
+                            <li
+                                style="padding: 10px 15px; font-size: 16px; color: #333; display: flex; justify-content: space-between; align-items: center;">
+                                Shipping fee <span style="font-weight: bold; color: #28a745;">Free</span>
+                            </li>
                         </ul>
-                        <div style="display: flex; justify-content: space-around;">
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
                             @if(!empty($cart) && count($cart) > 0)
-                                <form action="{{ URL::to('/check-coupon') }}" method="post" style="display: flex;">
+                                <form action="{{ URL::to('/check-coupon') }}" method="post"
+                                    style="display: flex; flex-grow: 1;">
                                     @csrf
-                                    <input style="width: 150px;" type="text" name="coupon" class="form-control"
-                                        placeholder="Nhập mã giảm giá">
+                                    <input type="text" name="coupon" class="form-control" placeholder="Nhập mã giảm giá"
+                                        style="width: 60%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px;">
                                     <input type="submit" class="btn btn-default check_coupon" name="check_coupon"
-                                        value="Áp dụng">
+                                        value="Áp dụng"
+                                        style="background: rgb(84, 105, 201); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
                                 </form>
-                                <a class="btn btn-default check_out" href="{{ URL::to('/checkout') }}">Thanh toán</a>
+                                <a class="btn btn-default check_out" href="{{ URL::to('/checkout') }}"
+                                    style="background: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+                                    Buy
+                                </a>
                             @endif
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
